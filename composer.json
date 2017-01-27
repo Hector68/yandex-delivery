@@ -1,0 +1,35 @@
+{
+  "name": "hector68/yandex-delivery",
+  "description": "Yandex delivery create order",
+  "type": "library",
+  "keywords": [
+    "yandex-delivery",
+    "delivery",
+    "createOrder",
+    "searchDeliveryList"
+  ],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Dmitriy Ronzhin",
+      "email": "hector.tmb@gmail.com"
+    }
+  ],
+  "minimum-stability": "dev",
+  "require": {
+    "php": ">=5.5.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "4.8.*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Hector68\\YandexDelivery\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Hector68\\YandexDelivery\\Tests\\": "tests/"
+    }
+  }
+}
