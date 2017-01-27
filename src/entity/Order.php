@@ -3,7 +3,7 @@
 namespace Hector68\YandexDelivery\entity;
 
 
-class YdApi
+class Order
 {
     
     
