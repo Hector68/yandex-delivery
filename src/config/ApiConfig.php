@@ -13,7 +13,7 @@ class ApiConfig extends AbstractConfig
     /**
      * @var string
      */
-    private $api_server = 'https://delivery.yandex.ru/api/1.0/';
+    private $api_server = 'https://delivery.yandex.ru/api/last/';
 
 
     /**

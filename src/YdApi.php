@@ -4,7 +4,7 @@ namespace Hector68\YandexDelivery;
 
 
 use Hector68\YandexDelivery\config\InterfaceYdConfigure;
-use Hector68\YandexDelivery\entity\Order;
+use Hector68\YandexDelivery\entity\interfaceOrder;
 /**
  * @author Dmitriy Ronzhin <hector.tmb@gmail.com>
  * @author Obukhov.S <proweb50@gmail.com>
@@ -16,9 +16,12 @@ class YdApi
      * @var InterfaceYdConfigure
      */
     private $config;
-    
 
 
+    /**
+     * YdApi constructor.
+     * @param InterfaceYdConfigure $config
+     */
     public function __construct(InterfaceYdConfigure $config)
     {
         $this->config = $config;
@@ -222,6 +225,9 @@ class YdApi
     }
 
 
+    /**
+     * @return array
+     */
     public function getOrderRequisite()
     {
         $params = Array('client_id' => $this->config->getClientId(), 'sender_id' => $this->config->getSenderId(), 'requisite_id' => $this->config->getRequisiteId());
@@ -235,6 +241,17 @@ class YdApi
     }
 
 
+    /**
+     * @param $city_from
+     * @param $city_to
+     * @param $weight
+     * @param $length
+     * @param $width
+     * @param $height
+     * @param $assessed_value
+     * @param $order_cost
+     * @return mixed
+     */
     public function searchDeliveryList($city_from, $city_to, $weight, $length, $width, $height, $assessed_value, $order_cost)
     {
         $searchParams = [
@@ -255,10 +272,39 @@ class YdApi
     }
 
 
-
-    public function createOrder(Order $order)
+    /**
+     * @param interfaceOrder $order
+     * @return mixed
+     */
+    public function createOrder(interfaceOrder $order)
     {
+        $orderResult = [
+            'client_id' => $this->config->getClientId(),
+            'sender_id' => $this->config->getSenderId(),
+        ];
 
+        if (empty($order->getOrderWeight()) && !empty($this->config->getDefaultWeight())) {
+            $orderResult['order_weight'] = $this->config->getDefaultWeight();
+        }
+
+        if (empty($order->getOrderWeight()) && !empty($this->config->getDefaultWidth())) {
+            $orderResult['order_width'] = $this->config->getDefaultWeight();
+        }
+
+        if (empty($order->getOrderHeight()) && !empty($this->config->getDefaultHeight())) {
+            $orderResult['order_height'] = $this->config->getDefaultHeight();
+        }
+
+        if (empty($order->order_length) && !empty($this->config->getDefaultLength())) {
+            $orderResult['order_length'] = $this->config->getDefaultHeight();
+        }
+
+        $params = array_merge(
+            $order->asArray(),
+            $orderResult
+        );
+
+        return $this->getCurlResult('createOrder', $params);
     }
 
 

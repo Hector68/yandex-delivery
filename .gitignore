@@ -3,5 +3,6 @@ vendor
 coverage
 tests/runtime
 coverage.xml
+*_local.php
 .vagrant
 .idea
