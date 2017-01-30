@@ -18,7 +18,7 @@ class Delivery implements interfaceAsArray
     /**
      * @var int
      */
-    protected $to_yd_warehouse;
+    protected $to_yd_warehouse = 1;
     /**
      * @var int ID пункта выдачи
      */

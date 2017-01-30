@@ -24,7 +24,7 @@ class Item implements interfaceAsArray, interfaceYandexOrderItem
      */
     protected $orderitem_quantity;
     /**
-     * @var double
+     * @var int
      */
     protected $orderitem_cost;
     /**

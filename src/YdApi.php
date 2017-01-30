@@ -5,6 +5,7 @@ namespace Hector68\YandexDelivery;
 
 use Hector68\YandexDelivery\config\InterfaceYdConfigure;
 use Hector68\YandexDelivery\entity\interfaceOrder;
+
 /**
  * @author Dmitriy Ronzhin <hector.tmb@gmail.com>
  * @author Obukhov.S <proweb50@gmail.com>
@@ -25,9 +26,8 @@ class YdApi
     public function __construct(InterfaceYdConfigure $config)
     {
         $this->config = $config;
-        
-    }
 
+    }
 
 
     /**
@@ -69,6 +69,7 @@ class YdApi
             return true;
         else return false;
     }
+
     /**
      * @param $method
      * @return mixed
@@ -79,6 +80,7 @@ class YdApi
     {
         return htmlspecialchars($this->config->getMethodKeys()[$method]);
     }
+
     /**
      * @param bool|false $show_value
      * @return array
@@ -99,6 +101,7 @@ class YdApi
         }
         return $methods;
     }
+
     /**
      * @param $method
      * @param array $arParams
@@ -135,6 +138,7 @@ class YdApi
         $secret_key = md5($secret_key . $this->getMethodKeyByName($method));
         return $secret_key;
     }
+
     /**
      * @param $method
      * @param $arParams
@@ -151,6 +155,7 @@ class YdApi
         $arParams["secret_key"] = $secret_key;
         return http_build_query($arParams);
     }
+
     /**
      * @param $method
      * @param array $arParams
@@ -173,6 +178,7 @@ class YdApi
         curl_close($ch);
         return json_decode($response, true);
     }
+
     /**
      * @param array $query
      * @param string $separator
@@ -283,22 +289,27 @@ class YdApi
             'sender_id' => $this->config->getSenderId(),
         ];
 
-        if (empty($order->getOrderWeight()) && !empty($this->config->getDefaultWeight())) {
-            $orderResult['order_weight'] = $this->config->getDefaultWeight();
-        }
+        $setDefaultDataFlag = false;
 
-        if (empty($order->getOrderWeight()) && !empty($this->config->getDefaultWidth())) {
-            $orderResult['order_width'] = $this->config->getDefaultWeight();
-        }
 
-        if (empty($order->getOrderHeight()) && !empty($this->config->getDefaultHeight())) {
-            $orderResult['order_height'] = $this->config->getDefaultHeight();
-        }
+        if ($setDefaultDataFlag) {
 
-        if (empty($order->order_length) && !empty($this->config->getDefaultLength())) {
-            $orderResult['order_length'] = $this->config->getDefaultHeight();
-        }
+            if (empty($order->getOrderWeight()) && !empty($this->config->getDefaultWeight())) {
+                $orderResult['order_weight'] = $this->config->getDefaultWeight();
+            }
 
+            if (empty($order->getOrderWeight()) && !empty($this->config->getDefaultWidth())) {
+                $orderResult['order_width'] = $this->config->getDefaultWeight();
+            }
+
+            if (empty($order->getOrderHeight()) && !empty($this->config->getDefaultHeight())) {
+                $orderResult['order_height'] = $this->config->getDefaultHeight();
+            }
+
+            if (empty($order->order_length) && !empty($this->config->getDefaultLength())) {
+                $orderResult['order_length'] = $this->config->getDefaultHeight();
+            }
+        }
         $params = array_merge(
             $order->asArray(),
             $orderResult

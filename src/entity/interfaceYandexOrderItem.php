@@ -15,7 +15,7 @@ interface interfaceYandexOrderItem
     public function getOrderitemQuantity();
 
     /**
-     * @return float
+     * @return int
      */
     public function getOrderitemCost();
 
@@ -30,21 +30,21 @@ interface interfaceYandexOrderItem
     public function getOrderitemArticle();
 
     /**
-     * @return float
+     * @return int
      */
     public function getOrderitemWeight();
     /**
-     * @return float
+     * @return int
      */
     public function getOrderitemLength();
 
     /**
-     * @return float
+     * @return int
      */
     public function getOrderitemWidth();
 
     /**
-     * @return float
+     * @return int
      */
     public function getOrderitemHeight();
 
