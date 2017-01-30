@@ -1,5 +1,5 @@
 # yandex-delivery
-
+[![Build Status](https://travis-ci.org/Hector68/yandex-delivery.svg?branch=master)](https://travis-ci.org/Hector68/yandex-delivery)
 
 Базовый класс для поиска точек и создания заказов
 Примеры создания заказов, можно посмотреть в тестах
