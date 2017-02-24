@@ -15,7 +15,7 @@ class DebugConfig extends AbstractConfig
      */
     public function __construct()
     {
-        $this->method_keys =  [
+        $this->method_keys = [
             "getPaymentMethods" => "#####",
             "getSenderOrders" => "#####",
             "getSenderOrderLabel" => "#####",
@@ -41,7 +41,17 @@ class DebugConfig extends AbstractConfig
             "searchDeliveryList" => "#####",
             "confirmSenderParcels" => "#####"
         ];
-    
+
+    }
+
+
+    public function setDefaultData($weight, $height, $width, $length)
+    {
+        $this->defaultWeight = $weight;
+        $this->defaultHeight = $height;
+        $this->defaultWidth = $width;
+        $this->defaultLength = $length;
+        
     }
 
     public function getApiServer()

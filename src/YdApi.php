@@ -5,6 +5,7 @@ namespace Hector68\YandexDelivery;
 
 use Hector68\YandexDelivery\config\InterfaceYdConfigure;
 use Hector68\YandexDelivery\entity\interfaceOrder;
+
 /**
  * @author Dmitriy Ronzhin <hector.tmb@gmail.com>
  * @author Obukhov.S <proweb50@gmail.com>
@@ -27,7 +28,6 @@ class YdApi
         $this->config = $config;
 
     }
-
 
 
     /**
@@ -65,10 +65,22 @@ class YdApi
         $RequireParam["getOrderInfo"] = Array("secret_key", "client_id", "sender_id", "order_id");
         $RequireParam["searchDeliveryList"] = Array("secret_key", "client_id", "sender_id", "city_from", "city_to", "weight", "height", "width", "length");  //todo check params
         $RequireParam["confirmSenderParcels"] = Array("secret_key", "client_id", "sender_id", "parcel_ids");
-        if (array_intersect($arParams, $RequireParam[$method_name]) == $RequireParam[$method_name])
-            return true;
-        else return false;
+
+        $errors = [];
+
+        if(isset($RequireParam[$method_name])) {
+            foreach ($RequireParam[$method_name] as $key) {
+                if(!isset($arParams[$key])) {
+                    $errors[] = $key;
+                }
+            }
+        } else {
+            $errors[] = $method_name;
+        }
+        
+        return $errors === [];
     }
+
     /**
      * @param $method
      * @return mixed
@@ -79,6 +91,7 @@ class YdApi
     {
         return htmlspecialchars($this->config->getMethodKeys()[$method]);
     }
+
     /**
      * @param bool|false $show_value
      * @return array
@@ -99,6 +112,7 @@ class YdApi
         }
         return $methods;
     }
+
     /**
      * @param $method
      * @param array $arParams
@@ -135,6 +149,7 @@ class YdApi
         $secret_key = md5($secret_key . $this->getMethodKeyByName($method));
         return $secret_key;
     }
+
     /**
      * @param $method
      * @param $arParams
@@ -144,13 +159,9 @@ class YdApi
      */
     private function getQuery($method, $arParams = Array())
     {
-        $secret_key = $this->getSecretKey($method, $arParams);
-        /** query формируется неправильно, раз мы имеем массивы
-         * сортировка впринципе не нужна
-         */
-        $arParams["secret_key"] = $secret_key;
         return http_build_query($arParams);
     }
+
     /**
      * @param $method
      * @param array $arParams
@@ -159,20 +170,31 @@ class YdApi
      */
     protected function getCurlResult($method, $arParams = Array())
     {
-        $string = $this->getQuery($method, $arParams);
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $this->config->getApiServer() . $method);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-        curl_setopt($ch, CURLOPT_HEADER, FALSE);
-        curl_setopt($ch, CURLOPT_POST, TRUE);
-        #notice this string for only test version without https
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $string);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: application/x-www-form-urlencoded"));
-        $response = curl_exec($ch);
-        curl_close($ch);
-        return json_decode($response, true);
+        $secret_key = $this->getSecretKey($method, $arParams);
+        /** query формируется неправильно, раз мы имеем массивы
+         * сортировка впринципе не нужна
+         */
+        $arParams["secret_key"] = $secret_key;
+
+        if ($this->isRequireParams($method, $arParams)) {
+            $string = $this->getQuery($method, $arParams);
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $this->config->getApiServer() . $method);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+            curl_setopt($ch, CURLOPT_HEADER, FALSE);
+            curl_setopt($ch, CURLOPT_POST, TRUE);
+            #notice this string for only test version without https
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $string);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: application/x-www-form-urlencoded"));
+            $response = curl_exec($ch);
+            curl_close($ch);
+            return json_decode($response, true);
+        }
+
+        return false;
     }
+
     /**
      * @param array $query
      * @param string $separator
@@ -281,14 +303,15 @@ class YdApi
         $orderResult = [
             'client_id' => $this->config->getClientId(),
             'sender_id' => $this->config->getSenderId(),
+            'to_yd_warehouse' => $this->config->getDefaultYdWarehouse()
         ];
-        
+
         if (empty($order->getOrderWeight()) && !empty($this->config->getDefaultWeight())) {
             $orderResult['order_weight'] = $this->config->getDefaultWeight();
         }
 
         if (empty($order->getOrderWidth()) && !empty($this->config->getDefaultWidth())) {
-            $orderResult['order_width'] = $this->config->getDefaultWeight();
+            $orderResult['order_width'] = $this->config->getDefaultWidth();
         }
 
         if (empty($order->getOrderHeight()) && !empty($this->config->getDefaultHeight())) {
@@ -298,12 +321,12 @@ class YdApi
         if (empty($order->getOrderLength()) && !empty($this->config->getDefaultLength())) {
             $orderResult['order_length'] = $this->config->getDefaultHeight();
         }
-        
+
         $params = array_merge(
             $order->asArray(),
             $orderResult
         );
-        
+
 
         return $this->getCurlResult('createOrder', $params);
     }
