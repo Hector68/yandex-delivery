@@ -61,4 +61,9 @@ interface InterfaceYdConfigure
      */
     public function getMethodKeys();
     
+    /**
+     * @return int
+     */
+    public function getDefaultYdWarehouse();
+    
 }

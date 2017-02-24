@@ -12,13 +12,11 @@ use Hector68\YandexDelivery\entity\Delivery;
 class YdHelper
 {
     /**
-     * @param $response
+     * @param $data
      * @return Delivery|null
      */
-    public static function getDeliveryFromWidgetResponse($response)
+    public static function getDeliveryFromWidgetResponse(array $data)
     {
-        $data = json_decode($response, true);
-
         if (isset($data['type'], $data['is_pickup_point'], $data['tariffId'], $data['delivery']['id'], $data['direction'])) {
             $deliveryParams = [
                 'pickuppoint' => isset($data['pickuppointId']) ? $data['pickuppointId'] : null,

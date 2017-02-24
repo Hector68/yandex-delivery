@@ -86,7 +86,13 @@ interface interfaceOrder
     public function getRecipient();
 
     /**
+     * @return int
+     */
+    public function getToYdWarehouse();
+    
+    /**
      * @return array
      */
     public function asArray();
+    
 }

@@ -54,6 +54,10 @@ abstract class AbstractConfig implements InterfaceYdConfigure
      */
     protected $defaultHeight = 15;
 
+    /**
+     * @var int Отгрузка на единый склад/на склад службы доставки
+     */
+    protected $defaultYdWarehouse = 1;
 
     /**
      * @return string
@@ -132,6 +136,14 @@ abstract class AbstractConfig implements InterfaceYdConfigure
     public function getMethodKeys()
     {
         return $this->method_keys;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDefaultYdWarehouse()
+    {
+        return (int) $this->defaultYdWarehouse;
     }
     
 }

@@ -127,8 +127,8 @@ class ApiTest extends \PHPUnit_Framework_TestCase
 
         $response1 = file_get_contents(dirname(__FILE__).'/ydWidgetResponse1.json');
         $response2 =  file_get_contents(dirname(__FILE__).'/ydWidgetResponse2.json');
-        $deliveryTodorFromYdWidget = YdHelper::getDeliveryFromWidgetResponse($response1);
-        $deliveryPickupFromYdWidget =  YdHelper::getDeliveryFromWidgetResponse($response2);
+        $deliveryTodorFromYdWidget = YdHelper::getDeliveryFromWidgetResponse(json_decode($response1, true));
+        $deliveryPickupFromYdWidget =  YdHelper::getDeliveryFromWidgetResponse(json_decode($response2, true));
 
 
 
@@ -166,10 +166,6 @@ class ApiTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals('ok', $result['status']);
     }
-
-
-
-
-
+    
 
 }

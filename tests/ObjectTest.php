@@ -63,9 +63,10 @@ class ObjectTest extends \PHPUnit_Framework_TestCase
      */
     public function testDeliveryFromWidget($response)
     {
-        $delivery = YdHelper::getDeliveryFromWidgetResponse($response);
+        $data = json_decode($response, true);
+        $delivery = YdHelper::getDeliveryFromWidgetResponse($data);
 
-        $this->assertTrue($delivery instanceof Delivery);
+        $this->assertInstanceOf(Delivery::class, $delivery );
 
     }
 
@@ -122,6 +123,7 @@ class ObjectTest extends \PHPUnit_Framework_TestCase
 
         $resultArray = $order->asArray();
 
+
         $this->assertTrue($order instanceof interfaceOrder);
 
         $this->assertTrue($order->getRecipient() == $recipient);
@@ -135,6 +137,8 @@ class ObjectTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(1385, $resultArray['delivery']['delivery']);
 
     }
+
+
 
 
 }

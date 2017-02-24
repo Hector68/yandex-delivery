@@ -102,6 +102,13 @@ class Order implements interfaceOrder, interfaceAsArray
      */
     protected $configYd;
 
+
+    /**
+     * @var int Отгрузка на единый склад/на склад службы доставки
+     */
+    protected $to_yd_warehouse;
+    
+    
     /**
      * @return int
      */
@@ -230,6 +237,12 @@ class Order implements interfaceOrder, interfaceAsArray
         return $this->recipient;
     }
 
-    
+    /**
+     * @return int
+     */
+    public function getToYdWarehouse()
+    {
+        return $this->to_yd_warehouse;
+    }
 
 }
