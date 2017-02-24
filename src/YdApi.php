@@ -287,7 +287,7 @@ class YdApi
             $orderResult['order_weight'] = $this->config->getDefaultWeight();
         }
 
-        if (empty($order->getOrderWeight()) && !empty($this->config->getDefaultWidth())) {
+        if (empty($order->getOrderWidth()) && !empty($this->config->getDefaultWidth())) {
             $orderResult['order_width'] = $this->config->getDefaultWeight();
         }
 
@@ -295,16 +295,15 @@ class YdApi
             $orderResult['order_height'] = $this->config->getDefaultHeight();
         }
 
-        if (empty($order->order_length) && !empty($this->config->getDefaultLength())) {
+        if (empty($order->getOrderLength()) && !empty($this->config->getDefaultLength())) {
             $orderResult['order_length'] = $this->config->getDefaultHeight();
         }
-
+        
         $params = array_merge(
             $order->asArray(),
             $orderResult
         );
-
-        var_dump($params);
+        
 
         return $this->getCurlResult('createOrder', $params);
     }

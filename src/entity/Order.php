@@ -127,11 +127,11 @@ class Order implements interfaceOrder, interfaceAsArray
         if($this->hasItemsWeightInfo() ) {
             $this->order_weight = 0;
             foreach ($this->getOrderItems() as $item) {
-                $this->order_width =  $this->order_width + ($item->getOrderitemWeight() * $item->getOrderitemQuantity);
+                $this->order_weight += ($item->getOrderitemWeight() * $item->getOrderitemQuantity());
             }
-            $this->order_weight = ceil( $this->order_width);
+            $this->order_weight = ceil($this->order_weight);
         }
-        return $this->order_width;
+        return $this->order_weight;
     }
 
     /**
@@ -142,7 +142,7 @@ class Order implements interfaceOrder, interfaceAsArray
         if(empty($this->order_length) && $this->hasItemsWeightInfo() ) {
             $this->order_length = 0;
             foreach ($this->getOrderItems() as $item) {
-                $this->order_length = max($this->order_length , $item->getOrderitemLength());
+                $this->order_length = max($this->order_length , ceil($item->getOrderitemLength()));
             }
         }
         return $this->order_length;
@@ -154,9 +154,9 @@ class Order implements interfaceOrder, interfaceAsArray
     public function getOrderWidth()
     {
         if($this->hasItemsWeightInfo() ) {
-            $this->order_length = 0;
+            $this->order_width = 0;
             foreach ($this->getOrderItems() as $item) {
-                $this->order_width = max($this->order_length , $item->getOrderitemWeight());
+                $this->order_width = max($this->order_width , ceil($item->getOrderitemWidth()));
             }
         }
         return $this->order_width;
@@ -168,9 +168,9 @@ class Order implements interfaceOrder, interfaceAsArray
     public function getOrderHeight()
     {
         if($this->hasItemsWeightInfo() ) {
-            $this->order_length = 0;
+            $this->order_height = 0;
             foreach ($this->getOrderItems() as $item) {
-                $this->order_height = max($this->order_length , $item->getOrderitemHeight());
+                $this->order_height = max($this->order_height ,  ceil($item->getOrderitemHeight()));
             }
         }
         return $this->order_height;
