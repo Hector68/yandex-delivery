@@ -82,7 +82,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
                 'orderitem_name' => 'Test2',
                 'orderitem_quantity' => 1,
                 'orderitem_cost' => rand(1,500),
-                'orderitem_weight' => 2.6,
+                'orderitem_weight' => 2.7,
                 'orderitem_length' => 5.34,
                 'orderitem_width' => 54,5,
                 'orderitem_height' => 23.33
@@ -157,6 +157,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
             ],
             $this->config
         );
+
+
+        $this->assertTrue($order->getOrderWidth() > 0);
 
         $result = $this->api->createOrder($order);
 

@@ -45,6 +45,23 @@ class ObjectTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($result['orderitem_name'] === 'Test');
     }
 
+
+    public function testItemWithWeight()
+    {
+        $item =  new Item([
+            'orderitem_name' => 'Test2',
+            'orderitem_quantity' => 1,
+            'orderitem_cost' => rand(1,500),
+            'orderitem_weight' => 2.6,
+            'orderitem_length' => 5.34,
+            'orderitem_width' => 54,5,
+            'orderitem_height' => 23.33
+        ]);
+
+        $this->assertTrue($item->hasWeightInfo());
+    }
+
+
     public function addDeliveryWidgetProvider()
     {
         return [
@@ -76,11 +93,19 @@ class ObjectTest extends \PHPUnit_Framework_TestCase
         $order_items = [
             new Item([
                 'orderitem_name' => 'Test',
-                'orderitem_quantity' => '2'
+                'orderitem_quantity' => '2',
+                'orderitem_weight' => 2.6,
+                'orderitem_length' => 5.34,
+                'orderitem_width' => 54,5,
+                'orderitem_height' => 23.33
             ]),
             new Item([
                 'orderitem_name' => 'Test2',
-                'orderitem_quantity' => 1
+                'orderitem_quantity' => 1,
+                'orderitem_weight' => 2.6,
+                'orderitem_length' => 5.34,
+                'orderitem_width' => 54,5,
+                'orderitem_height' => 23.33
             ])
         ];
 
@@ -122,8 +147,9 @@ class ObjectTest extends \PHPUnit_Framework_TestCase
         );
 
         $resultArray = $order->asArray();
-
-
+        
+        $this->assertTrue($order->getOrderWidth() > 0);
+        
         $this->assertTrue($order instanceof interfaceOrder);
 
         $this->assertTrue($order->getRecipient() == $recipient);

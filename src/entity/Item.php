@@ -12,7 +12,7 @@ class Item implements interfaceAsArray, interfaceYandexOrderItem
     use traitAsArray;
 
     use traitSetObject;
-    
+
     use traitConstruct;
 
     /**
@@ -125,6 +125,18 @@ class Item implements interfaceAsArray, interfaceYandexOrderItem
         return $this->orderitem_height;
     }
 
+
+    /**
+     * возврщает имеет ли позиция вес и ширину
+     * @return bool
+     */
+    public function hasWeightInfo()
+    {
+        return empty($this->getOrderitemWeight()) === false &&
+        empty($this->getOrderitemWidth()) === false &&
+        empty($this->getOrderitemHeight()) === false &&
+        empty($this->getOrderitemLength()) === false;
+    }
 
 
 }

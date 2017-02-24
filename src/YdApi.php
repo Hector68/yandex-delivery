@@ -25,7 +25,7 @@ class YdApi
     public function __construct(InterfaceYdConfigure $config)
     {
         $this->config = $config;
-        
+
     }
 
 
@@ -282,7 +282,7 @@ class YdApi
             'client_id' => $this->config->getClientId(),
             'sender_id' => $this->config->getSenderId(),
         ];
-
+        
         if (empty($order->getOrderWeight()) && !empty($this->config->getDefaultWeight())) {
             $orderResult['order_weight'] = $this->config->getDefaultWeight();
         }
@@ -303,6 +303,8 @@ class YdApi
             $order->asArray(),
             $orderResult
         );
+
+        var_dump($params);
 
         return $this->getCurlResult('createOrder', $params);
     }

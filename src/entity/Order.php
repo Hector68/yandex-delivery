@@ -14,7 +14,7 @@ class Order implements interfaceOrder, interfaceAsArray
     use traitAsArray;
 
     use traitSetObject;
-    
+
     use traitConstruct;
 
     /**
@@ -107,8 +107,10 @@ class Order implements interfaceOrder, interfaceAsArray
      * @var int Отгрузка на единый склад/на склад службы доставки
      */
     protected $to_yd_warehouse;
-    
-    
+
+
+    protected $hasItemsWeightInfoFlag;
+
     /**
      * @return int
      */
@@ -122,7 +124,14 @@ class Order implements interfaceOrder, interfaceAsArray
      */
     public function getOrderWeight()
     {
-        return $this->order_weight;
+        if($this->hasItemsWeightInfo() ) {
+            $this->order_weight = 0;
+            foreach ($this->getOrderItems() as $item) {
+                $this->order_width =  $this->order_width + ($item->getOrderitemWeight() * $item->getOrderitemQuantity);
+            }
+            $this->order_weight = ceil( $this->order_width);
+        }
+        return $this->order_width;
     }
 
     /**
@@ -130,6 +139,12 @@ class Order implements interfaceOrder, interfaceAsArray
      */
     public function getOrderLength()
     {
+        if(empty($this->order_length) && $this->hasItemsWeightInfo() ) {
+            $this->order_length = 0;
+            foreach ($this->getOrderItems() as $item) {
+                $this->order_length = max($this->order_length , $item->getOrderitemLength());
+            }
+        }
         return $this->order_length;
     }
 
@@ -138,6 +153,12 @@ class Order implements interfaceOrder, interfaceAsArray
      */
     public function getOrderWidth()
     {
+        if($this->hasItemsWeightInfo() ) {
+            $this->order_length = 0;
+            foreach ($this->getOrderItems() as $item) {
+                $this->order_width = max($this->order_length , $item->getOrderitemWeight());
+            }
+        }
         return $this->order_width;
     }
 
@@ -146,6 +167,12 @@ class Order implements interfaceOrder, interfaceAsArray
      */
     public function getOrderHeight()
     {
+        if($this->hasItemsWeightInfo() ) {
+            $this->order_length = 0;
+            foreach ($this->getOrderItems() as $item) {
+                $this->order_height = max($this->order_length , $item->getOrderitemHeight());
+            }
+        }
         return $this->order_height;
     }
 
@@ -243,6 +270,26 @@ class Order implements interfaceOrder, interfaceAsArray
     public function getToYdWarehouse()
     {
         return $this->to_yd_warehouse;
+    }
+
+    /**
+     * Возвращает все ли дочернии итемы имеют информацию о весе и размере
+     * @return bool
+     */
+    protected function hasItemsWeightInfo()
+    {
+
+        if ($this->hasItemsWeightInfoFlag === null) {
+            foreach ($this->getOrderItems() as $item) {
+                if ($item instanceof Item && $item->hasWeightInfo()) {
+                    $this->hasItemsWeightInfoFlag = true;
+                } else {
+                    $this->hasItemsWeightInfoFlag = false;
+                    break;
+                }
+            }
+        }
+        return $this->hasItemsWeightInfoFlag;
     }
 
 }
