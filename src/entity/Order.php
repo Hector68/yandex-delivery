@@ -109,7 +109,7 @@ class Order implements interfaceOrder, interfaceAsArray
     protected $to_yd_warehouse;
 
 
-    protected $hasItemsWeightInfoFlag;
+    private $hasItemsWeightInfoFlag;
 
     /**
      * @return int
