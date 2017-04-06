@@ -8,7 +8,7 @@ class DebugConfig extends AbstractConfig
     /**
      * @var string
      */
-    private $api_server = 'https://private-anon-b4b8e6d6c8-yandexdelivery.apiary-mock.com/api/last/';
+    private $api_server = 'https://private-anon-4900b20a40-yandexdelivery.apiary-mock.com/api/last/';
 
     /**
      * DebugConfig constructor.
