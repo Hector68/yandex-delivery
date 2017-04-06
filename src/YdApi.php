@@ -168,7 +168,7 @@ class YdApi
      * @return mixed
      *
      */
-    protected function getCurlResult($method, $arParams = Array())
+    public function getCurlResult($method, $arParams = Array())
     {
         $secret_key = $this->getSecretKey($method, $arParams);
         /** query формируется неправильно, раз мы имеем массивы
